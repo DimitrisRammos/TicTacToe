@@ -1,4 +1,6 @@
+from turtle import width
 import pygame
+
 def draw():
     board = ''
 
@@ -163,8 +165,7 @@ def two_players():
     board = create_board()
     draw()
     
-    pygame.init()
-    screen = pygame.display.set_mode((800,600))
+    
     while(1):
         
         print("\nFirst Player with X")
@@ -201,18 +202,93 @@ def one_player():
     print("Start Game")
     
 
+class Button():
+    
+    def __init__(self, x, y, image, scale):
+        width = image.get_width()
+        height = image.get_height()
+        self.image = pygame.transform.scale( image, (int(width*scale), int(height*scale)))
+        self.rect = self.image.get_rect()
+        self.rect.topleft = ( x,y)
+        self.clicked = False
+        
+    def draw( self):
+        find = False
+        
+        
+        #get the mouse position
+        position = pygame.mouse.get_pos()
+        if self.rect.collidepoint( position):
+            #if is the left click
+            #not double click
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                self.clicked = True
+                find = True
+                            
+        if pygame.mouse.get_pressed()[0] == 0:
+            self.clicked = False
+        
+        screen.blit( self.image, (self.rect.x, self.rect.y))
+        return find
 
 if __name__ == "__main__":
-    while(1):
+    
+    pygame.init()
+    screen = pygame.display.set_mode((800,600))
+    
+    
+    
+    #title and icon
+    pygame.display.set_caption("Tic Tac Toe")
+    # icon = pygame.image.load("t1.png")
+    # pygame.display.set_icon(icon)
+    
+    
+    #player
+    # playerImg = pygame.image.load('tic-tac-toe256.png')
+    # playerX = 300
+    # playerY = 100
+    
+    trie = pygame.image.load('tic-tac-toe256.png').convert_alpha()
+    p1 = pygame.image.load('p2.jpg').convert_alpha()
+    p2 = pygame.image.load('p1.jpg').convert_alpha()
+    e = pygame.image.load('exit.png').convert_alpha()
+
+    tic = Button( 300, 100, trie, 1)
+    b_p1 = Button( 175, 375, p1, 1)
+    b_p2 = Button( 450, 375, p2, 1)
+    Exit = Button( 350, 450, e, 1)
+    
+    running = True
+    while running:
+        screen.fill((0,255,255))
         
-        players = int(input("How many players?\n"))
-        if players == 2:
-            two_players()
-            break
-        elif players == 1:
-            one_player()
-            break
-        else:
-            print("Wrong input")
+        tic.draw()
+        if b_p1.draw() == True:
+            print("One")
+            
+        if b_p2.draw() == True:
+            print("Two")
+        
+        if Exit.draw() == True:
+            running = False
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False    
+        
+        pygame.display.update()
+    
+    # while(1):
+        
+    #     players = int(input("How many players?\n"))
+    #     if players == 2:
+    #         two_players()
+    #         break
+    #     elif players == 1:
+    #         one_player()
+    #         break
+    #     else:
+    #         print("Wrong input")
 
         
