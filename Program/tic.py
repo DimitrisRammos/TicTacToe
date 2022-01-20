@@ -514,9 +514,217 @@ def two_players( screen):
         #     break
         
         
-def one_player():
+def one_player( screen):
     print("Start Game")
+    board = create_board()
     
+    e = pygame.image.load('exit.png').convert_alpha()
+    b = pygame.image.load('go-back.png').convert_alpha()
+    x_icon = pygame.image.load('pic_x.png').convert_alpha()
+    o_icon = pygame.image.load('pic_o.png').convert_alpha()
+    play_a = pygame.image.load('replay.png').convert_alpha()
+    
+    play_again = Button(370,470,play_a, 1)
+    Exit = Button( 625, 450, e, 1)
+    Back = Button( 50, 482, b, 1)
+    
+    x_l = Button( 100, 32, x_icon, 0.3)
+    o_l = Button( 550, 24, o_icon, 0.4)
+  
+  
+  
+    start = 250
+    y = 100
+    Table = []
+    num = 0
+    while num < 9:
+        x = start
+        t = Touch( x, y)
+        Table.append(t)
+        num+=1
+        
+        x = start + 100
+        t = Touch( x, y)
+        Table.append(t)
+        num += 1
+        
+        x = start + 200
+        t = Touch( x, y)
+        Table.append(t)
+        num += 1
+        
+        y += 100    
+        # start
+    # Define the colors we will use in RGB format
+    
+    BLACK = (  0,   0,   0)
+    BLACK_1 = (  74,   74,   74)
+
+    WHITE = (255, 255, 255)
+    BLUE =  (  0,   0, 255)
+    BLUE_1 =  (  30,   144, 255)
+    
+    GREEN = (  0, 255,   0)
+    RED =   (255,   0,   0)
+    ORANGE = (255, 165, 0)
+    GREY = ( 128, 128, 128)
+
+    Font = pygame.font.SysFont("None",50)
+
+
+    i = 0
+    score_x = 0
+    score_o = 0
+    price_back = True
+    running = True
+    play = True
+    square = 0
+    play_x = True
+    while running:
+
+        screen.fill( (30,144,255))
+
+        if Exit.draw() == True:
+            running = False    
+            price_back = False
+        if Back.draw() == True:
+            running = False
+            
+        x_l.draw()
+        o_l.draw()
+        
+                   
+            
+        pygame.draw.line( screen, BLACK_1, [350,100], [350,400], 5)
+        pygame.draw.line( screen, BLACK_1, [450,100], [450,400], 5)
+
+        pygame.draw.line( screen, BLACK_1, [250,200], [550,200], 5)
+        pygame.draw.line( screen, BLACK_1, [250,300], [550,300], 5)
+        
+        
+        
+        if play == True and play_x == True:
+            find_x_y = 0
+            find_y = 1
+            find_x = 1
+            x = 0
+            y = 0
+            for t in Table:
+                
+                if t.check() == True:
+                    pos = t.take_position()
+                    x, y = pos
+                    if find_x_y <= 2:
+                        find_x = 1
+                        find_y = find_x_y + 1
+                    elif find_x_y <= 5:
+                        find_x = 2
+                        find_y = find_x_y - 2
+                    else:
+                        find_x = 3
+                        find_y = find_x_y - 5
+                    square+=1
+                    if i == 0:
+                        board = update_board(board, find_x, find_y, "X", pos)
+                        i = 1
+                        play_x = False
+                    # else:
+                        # board = update_board(board, find_x, find_y, "O", pos)
+                        # i = 0
+                    break
+                find_x_y += 1
+        if play == True and play_x == False:
+            # theBestMove = 
+            print("pao")
+        
+        Font = pygame.font.SysFont("None", 60)
+
+
+        score = Font.render( str(score_x), False, WHITE, BLUE_1)
+        screen.blit( score, ( 225, 33))
+        
+        score = Font.render( str(score_o), False, WHITE, BLUE_1)
+        screen.blit( score, ( 675, 34))
+        
+        
+        
+        
+        
+        for k in range(3):
+            List = board[k]
+            for elem in List:
+                element, position = elem
+                if element != None:
+                    x, y = position
+                    
+                    if element == "X":
+                        x1 = Button( x + 20, y + 20, x_icon, 0.5)
+                        x1.draw()
+                    else:
+                        o1 = Button( x + 10, y + 10, o_icon, 0.6)
+                        o1.draw() 
+                        
+        price = check_board( board)
+        if price != None:
+            l1,l2 = price
+            if i == 0:
+                if play == True:
+                    score_o +=1
+                #red
+                pygame.draw.line( screen, RED, l1, l2, 5)
+
+            else:
+                if play == True:
+                    score_x+=1
+                #black                             
+                pygame.draw.line( screen, BLACK, l1, l2, 5)
+            play = False
+            
+        if play == True:
+            if i == 0:
+                pygame.draw.line( screen, GREY, [100,75], [275,75], 4)
+            else:
+                pygame.draw.line( screen, GREY, [550,77], [725,77], 4)
+        
+        
+        if play == True and square == 9:
+            play = False
+            
+        if play == False:
+            if play_again.draw() == True:
+                square = 0
+                play = True
+                board = create_board()
+                Table.clear()
+                Table = []
+                start = 250
+                y = 100
+                num = 0
+                while num < 9:
+                    x = start
+                    t = Touch( x, y)
+                    Table.append(t)
+                    num+=1
+                    
+                    x = start + 100
+                    t = Touch( x, y)
+                    Table.append(t)
+                    num += 1
+                    
+                    x = start + 200
+                    t = Touch( x, y)
+                    Table.append(t)
+                    num += 1
+                    
+                    y += 100 
+            
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False 
+
+        pygame.display.update()
+
+    return price_back
 
 
 if __name__ == "__main__":
@@ -528,14 +736,7 @@ if __name__ == "__main__":
     
     #title and icon
     pygame.display.set_caption("Tic Tac Toe")
-    # icon = pygame.image.load("t1.png")
-    # pygame.display.set_icon(icon)
-    
-    
-    #player
-    # playerImg = pygame.image.load('tic-tac-toe256.png')
-    # playerX = 300
-    # playerY = 100
+
     
     trie = pygame.image.load('tic-tac-toe256.png').convert_alpha()
     p1 = pygame.image.load('p2.jpg').convert_alpha()
@@ -553,6 +754,9 @@ if __name__ == "__main__":
         
         tic.draw()
         if b_p1.draw() == True:
+            if one_player( screen) == False:
+                running = False
+                break
             print("One")
             
         if b_p2.draw() == True:
