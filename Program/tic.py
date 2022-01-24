@@ -1,7 +1,12 @@
 from cProfile import run
 from cgitb import grey
+import math
+from random import random
+from time import sleep
 from turtle import Screen, width
+from xml.dom.minidom import Element
 import pygame
+import random
 
 def draw():
     board = ''
@@ -34,6 +39,9 @@ class Button():
         find = False
         
         
+        if pygame.mouse.get_pressed()[0] == 0:
+            self.clicked = False
+        
         #get the mouse position
         position = pygame.mouse.get_pos()
         if self.rect.collidepoint( position):
@@ -42,11 +50,12 @@ class Button():
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 self.clicked = True
                 find = True
-                            
-        if pygame.mouse.get_pressed()[0] == 0:
-            self.clicked = False
+                
+                # sleep(1)
+                    
         
         screen.blit( self.image, (self.rect.x, self.rect.y))
+
         return find
     
 class Touch():
@@ -79,6 +88,9 @@ class Touch():
                 
     def take_position( self):
         return ( self.x, self.y)
+    
+    def check_it( self):
+        self.find = True
                 
         
         
@@ -338,16 +350,21 @@ def two_players( screen):
     price_back = True
     running = True
     play = True
+    play_now = True
     square = 0
     while running:
 
         screen.fill( (30,144,255))
 
-        if Exit.draw() == True:
-            running = False    
-            price_back = False
-        if Back.draw() == True:
-            running = False
+        if play_now == False:
+            if Exit.draw() == True:
+                running = False    
+                price_back = False
+            if Back.draw() == True:
+                running = False
+        else:            
+            Exit.draw()
+            Back.draw()
             
         x_l.draw()
         o_l.draw()
@@ -362,7 +379,7 @@ def two_players( screen):
         
         
         
-        if play == True:
+        if play == True and play_now == False:
             find_x_y = 0
             find_y = 1
             find_x = 1
@@ -476,6 +493,7 @@ def two_players( screen):
                     y += 100 
             
         for event in pygame.event.get():
+            play_now = False
             if event.type == pygame.QUIT:
                 running = False 
 
@@ -483,39 +501,283 @@ def two_players( screen):
 
     return price_back
 
+def tie_game( board):
+    for i in range(3):
+        List = board[i]
+        for j in range(3):
+            element, pos = List[j]
+            if element == None:
+                return False
+    return True
 
-        # print("\nFirst Player with X")
-        # x = int(input("Give x   "))        
-        # y = int(input("Give y   "))  
-        # board = update_board( board, x, y, "X")
-        # while board == None:
-            
-        #     print("\nWrong Input for Player 1, Please try again")
-        #     x = int(input("Give x   "))        
-        #     y = int(input("Give y   "))  
-        #     board = update_board( board, x, y, "X")
-        
-        # if check_board( board) == True:
-        #     break
-        
-        
-        # print("\nSecond Player with O")
-        # x = int(input("Give x   "))        
-        # y = int(input("Give y   "))  
-        # board = update_board( board, x, y, "O")
-        # while board == None:
-            
-        #     print("\nWrong Input for Player 2, Please try again")
-        #     x = int(input("Give x   "))        
-        #     y = int(input("Give y   "))  
-        #     board = update_board( board, x, y, "O")
+def check_for_win( board):
+    
+    #check first line
+    List = board[0]
+    i0, pos1 = List[0]
+    i1, pos2 = List[1]
+    i2, pos3 = List[2]
+    
+    if( i0 == "X" and i1 == "X" and i2 == "X"):
+        return -100
 
-        # if check_board( board) == True:
-        #     break
+    elif( i0 == "O" and i1 == "O" and i2 == "O"):
+        return 100
+
+    #check second line
+    List = board[1]
+    i0, pos1 = List[0]
+    i1, pos2 = List[1]
+    i2, pos3 = List[2]
+
+    if( i0 == "X" and i1 == "X" and i2 == "X"):
+        return -100
+    
+    elif( i0 == "O" and i1 == "O" and i2 == "O"):
+        return 100
+
+    #check third line
+    List = board[2]
+    i0, pos1 = List[0]
+    i1, pos2 = List[1]
+    i2, pos3 = List[2]
+    if( i0 == "X" and i1 == "X" and i2 == "X"):
+        return -100
+    
+    elif( i0 == "O" and i1 == "O" and i2 == "O"):
+        return 100
+    
+    
+    List_1 = board[0]
+    i0_1, pos1_1 = List_1[0]
+    i1_1, pos2_1 = List_1[1]
+    i2_1, pos3_1 = List_1[2]
+    
+    List_2 = board[1]
+    i0_2, pos1_2 = List_2[0]
+    i1_2, pos2_2 = List_2[1]
+    i2_2, pos3_2 = List_2[2]
+    
+    List_3 = board[2]
+    i0_3, pos1_3 = List_3[0]
+    i1_3, pos2_3 = List_3[1]
+    i2_3, pos3_3 = List_3[2]
+
+
+    #check first katheti-line
+    if( i0_1 == "X" and i0_2 == "X" and i0_3 == "X"):
+        return -100
+    
+    elif( i0_1 == "O" and i0_2 == "O" and i0_3 == "O"):
+        return 100
+    
+    #check second katheti-line
+    if(i1_1 == "X" and i1_2 == "X" and i1_3 == "X"):
+        return -100
         
+    elif( i1_1 == "O" and i1_2 == "O" and i1_3 == "O"):
+        return 100
         
-def one_player( screen):
-    print("Start Game")
+    #check third katheti-line
+    if( i2_1 == "X" and i2_2 == "X" and i2_3 == "X"):
+        return -100
+        
+    elif( i2_1 == "O" and i2_2 == "O" and i2_3 == "O"):
+        return 100
+    
+    
+    #check the first side-line
+    if( i0_1 == "X" and i1_2 == "X" and i2_3 == "X"):
+        return -100
+    
+    elif( i0_1 == "O" and i1_2 == "O" and i2_3 == "O"):
+        return 100
+    
+    #check the second side-line
+    if( i2_1 == "X" and i1_2 == "X" and i0_3 == "X"):
+        return -100
+    
+    elif( i2_1 == "O" and i1_2 == "O" and i0_3 == "O"):
+        return 100
+    
+    return 0        
+
+
+def minimax( board, depth, Max_player):
+    
+    score = check_for_win( board)
+    if score == 100:
+        return score
+    
+    if score == -100:
+        return score
+    
+    if tie_game( board) == True:
+        return 0
+    
+    if( Max_player):
+        best = -math.inf
+        for i in range(3):
+            List = board[i]
+            for j in range(3):
+                element, pos = List[j]
+                if element == None:
+                    
+                    element = "O"
+                    List[j] = (element, pos)
+                    board[i] = List
+                    
+                    best = max( best, minimax( board, depth+1, not Max_player))
+                    
+                    element = None
+                    List[j] = (element,pos)
+                    board[i] = List
+    
+        return best
+    else:
+        best = math.inf
+        for i in range(3):
+            List = board[i]
+            for j in range(3):
+                element, pos = List[j]
+                if element == None:
+                    
+                    element = "X"
+                    List[j] = (element, pos)
+                    board[i] = List
+                    
+                    best = min( best, minimax( board, depth+1, not Max_player))
+                    
+                    element = None
+                    List[j] = (element,pos)
+                    board[i] = List
+    
+        return best
+        
+def BestMove( board):
+    best = -math.inf
+    bestmove = (-1,-1)
+    for i in range(3):
+        List = board[i]
+        for j in range(3):
+            element, pos = List[j]
+            if element == None:
+                
+                element = "O"
+                List[j] = (element, pos)
+                board[i] = List
+                
+                evaluate_price = minimax( board, 0, False)
+                
+                element = None
+                List[j] = (element,pos)
+                board[i] = List
+                
+                if evaluate_price > best:
+                    best = evaluate_price
+                    bestmove = (i,j)                
+                
+    return bestmove
+
+def change_easy_or_dif( screen):
+    
+    BLACK = (  0,   0,   0)
+    BLACK_1 = (  74,   74,   74)
+
+    WHITE = (255, 255, 255)
+    BLUE =  (  0,   0, 255)
+    BLUE_1 =  (  30,   144, 255)
+    easy =  pygame.image.load('easy_(1).png').convert_alpha()
+    hard =  pygame.image.load('hard_(1).png').convert_alpha()
+    
+    e = pygame.image.load('exit.png').convert_alpha()
+    b = pygame.image.load('go-back.png').convert_alpha()
+    
+    Easy = Button( 275, 100, easy, 1)
+    Hard = Button( 275, 300, hard, 1)
+    Exit = Button( 625, 450, e, 1)
+    Back = Button( 50, 482, b, 1)
+    start = True
+
+    price = -1
+    running = True
+    while running:
+        
+        screen.fill( WHITE)
+        if start == False:
+            if Exit.draw() == True:
+                running = False    
+                price = -1
+                
+            if Back.draw() == True:
+                running = False
+                price = 2
+
+            
+            if Easy.draw() == True:
+                running = False
+                price = 0    
+                
+            if Hard.draw() == True:
+                running = False
+                price = 1
+        else:
+            Exit.draw()
+            Back.draw()
+            Easy.draw()
+            Hard.draw()
+
+        for event in pygame.event.get():
+            start = False
+            if event.type == pygame.QUIT:
+                running = False 
+
+        pygame.display.update()
+
+    return price
+
+
+def RandMove( board):
+    
+    for i in range(3):
+        List = board[i]
+        for j in range(3):
+            element, pos = List[j]
+            if element == None:
+                element = "O"
+                List[j] = (element, pos)
+                board[i] = List
+                
+                score = check_for_win( board)
+                
+                
+                element = None
+                List[j] = (element,pos)
+                board[i] = List
+                
+                if score == 100:
+                    move = (i,j)
+                    return move 
+                
+    
+    move = (-1,-1)
+    running = True
+    while running == True:
+        
+        x = random.randrange(0,3)
+        y = random.randrange(0,3)
+        
+        List = board[x]
+        element, pos = List[y]
+        if element == None:
+            move = (x,y)
+            running = False
+            
+    return move
+
+def one_player( screen, easy):
+    
+    
     board = create_board()
     
     e = pygame.image.load('exit.png').convert_alpha()
@@ -580,15 +842,22 @@ def one_player( screen):
     play = True
     square = 0
     play_x = True
+    
+    play_now = True
+    play_first = 0
     while running:
 
         screen.fill( (30,144,255))
 
-        if Exit.draw() == True:
-            running = False    
-            price_back = False
-        if Back.draw() == True:
-            running = False
+        if play_now == False:
+            if Exit.draw() == True:
+                running = False    
+                price_back = False
+            if Back.draw() == True:
+                running = False
+        else:
+            Exit.draw()
+            Back.draw()
             
         x_l.draw()
         o_l.draw()
@@ -603,7 +872,7 @@ def one_player( screen):
         
         
         
-        if play == True and play_x == True:
+        if play == True and play_x == True and play_now == False:
             find_x_y = 0
             find_y = 1
             find_x = 1
@@ -632,11 +901,47 @@ def one_player( screen):
                         # board = update_board(board, find_x, find_y, "O", pos)
                         # i = 0
                     break
-                find_x_y += 1
-        if play == True and play_x == False:
-            # theBestMove = 
-            print("pao")
-        
+                find_x_y += 1              
+        elif play == True and play_x == False and play_now == False:
+            x = -1
+            y = -1
+            if easy == 1 :
+                if( square != 0):
+                    theBestMove = BestMove( board)
+                    sleep(1)
+                else:
+                    theBestMove = (1,1)
+                x,y = theBestMove
+                
+            else:
+                if(square != 0):
+                    sleep(1)
+                move = RandMove(board)
+                x,y = move
+                
+            square+=1
+            find_pos = 0
+            if x == 0:
+                find_pos = y 
+            elif x == 1:
+                find_pos = y + 3
+            else:
+                find_pos = y + 6
+                
+            t = Table[find_pos]
+            pos = t.take_position()
+            t.check_it()
+            #to x pou m gyrna einai se poia 
+            
+            x +=1
+            y +=1
+            board = update_board( board, x,y, "O", pos)
+            # print("elaaa exo ", pos, x, y)
+            
+                
+            i = 0
+            play_x = True
+                                    
         Font = pygame.font.SysFont("None", 60)
 
 
@@ -651,6 +956,7 @@ def one_player( screen):
         
         
         for k in range(3):
+            
             List = board[k]
             for elem in List:
                 element, position = elem
@@ -700,6 +1006,15 @@ def one_player( screen):
                 start = 250
                 y = 100
                 num = 0
+                
+                if play_first == 0:
+                    i = 1
+                    play_first = 1
+                    play_x = False
+                else:
+                    i = 0
+                    play_first = 0
+                    play_x = True
                 while num < 9:
                     x = start
                     t = Touch( x, y)
@@ -719,6 +1034,7 @@ def one_player( screen):
                     y += 100 
             
         for event in pygame.event.get():
+            play_now = False
             if event.type == pygame.QUIT:
                 running = False 
 
@@ -754,16 +1070,22 @@ if __name__ == "__main__":
         
         tic.draw()
         if b_p1.draw() == True:
-            if one_player( screen) == False:
+
+            easy = change_easy_or_dif( screen)
+            if( easy == 0 or easy == 1):
+                if one_player( screen, easy) == False:
+                    running = False
+                    break
+
+            elif( easy == -1):
                 running = False
                 break
-            print("One")
+            
             
         if b_p2.draw() == True:
             if two_players( screen) == False:
                 running = False
                 break
-            print("Two")
         
         if Exit.draw() == True:
             running = False
@@ -773,17 +1095,3 @@ if __name__ == "__main__":
                 running = False    
         
         pygame.display.update()
-    
-    # while(1):
-        
-    #     players = int(input("How many players?\n"))
-    #     if players == 2:
-    #         two_players()
-    #         break
-    #     elif players == 1:
-    #         one_player()
-    #         break
-    #     else:
-    #         print("Wrong input")
-
-        
