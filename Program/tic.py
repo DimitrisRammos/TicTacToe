@@ -7,23 +7,7 @@ from turtle import Screen, width
 from xml.dom.minidom import Element
 import pygame
 import random
-
-def draw():
-    board = ''
-
-    for i in range(-1,6):
-
-        if i%2==0:
-            board += '|     ' * 4
-            board += '\n|     |     |     |'
-
-        else:
-            board += ' ____ ' * 3
-
-        board += '\n'
-    print (board)
-
-
+from OnePlayer_Functions import *
 
 class Button():
     
@@ -91,54 +75,7 @@ class Touch():
     
     def check_it( self):
         self.find = True
-                
-        
-        
-def draw_new(board):
-    b = ''
-    start = 0
-    for i in range(-1,6):
-        if i %2 == 0:
-            b += '|     ' * 4
-            List = board[start]
-            p1 = List[0]
-            if p1 == None:
-                b += '\n|     |'
-            
-            elif p1 == "X":
-                b += '\n|  X  |'
-            else:
-                b += '\n|  O  |'
-            
-            
-            p2 = List[1]
-            if p2 == None:
-                b += '     |'
-            
-            elif p2 == "X":
-                b += '  X  |'
-            else:
-                b += '  O  |'
-            
-            
-            p3 = List[2]
-            if p3 == None:
-                b += '     |'
-            
-            elif p3 == "X":
-                b += '  X  |'
-            else:
-                b += '  O  |'
-            
-            start += 1
-            
-        else:
-            b += ' ____ ' * 3
-            
-        b += '\n'
-    print(b)
-    
-    
+                        
 def create_board():
     board = {}
     for i in range(3):
@@ -157,7 +94,6 @@ def update_board( board, x, y, symbol, pos):
     List[y - 1] = ( element, pos)
     board[x-1] = List
     return board    
-    
     
 def check_board( board):
 
@@ -287,14 +223,13 @@ def check_board( board):
     
     
 def two_players( screen):
-    print("Start Game")
     board = create_board()
     
-    e = pygame.image.load('exit.png').convert_alpha()
-    b = pygame.image.load('go-back.png').convert_alpha()
-    x_icon = pygame.image.load('pic_x.png').convert_alpha()
-    o_icon = pygame.image.load('pic_o.png').convert_alpha()
-    play_a = pygame.image.load('replay.png').convert_alpha()
+    e = pygame.image.load('Pictures/exit.png').convert_alpha()
+    b = pygame.image.load('Pictures/go-back.png').convert_alpha()
+    x_icon = pygame.image.load('Pictures/pic_x.png').convert_alpha()
+    o_icon = pygame.image.load('Pictures/pic_o.png').convert_alpha()
+    play_a = pygame.image.load('Pictures/replay.png').convert_alpha()
     
     play_again = Button(370,470,play_a, 1)
     Exit = Button( 625, 450, e, 1)
@@ -501,184 +436,6 @@ def two_players( screen):
 
     return price_back
 
-def tie_game( board):
-    for i in range(3):
-        List = board[i]
-        for j in range(3):
-            element, pos = List[j]
-            if element == None:
-                return False
-    return True
-
-def check_for_win( board):
-    
-    #check first line
-    List = board[0]
-    i0, pos1 = List[0]
-    i1, pos2 = List[1]
-    i2, pos3 = List[2]
-    
-    if( i0 == "X" and i1 == "X" and i2 == "X"):
-        return -100
-
-    elif( i0 == "O" and i1 == "O" and i2 == "O"):
-        return 100
-
-    #check second line
-    List = board[1]
-    i0, pos1 = List[0]
-    i1, pos2 = List[1]
-    i2, pos3 = List[2]
-
-    if( i0 == "X" and i1 == "X" and i2 == "X"):
-        return -100
-    
-    elif( i0 == "O" and i1 == "O" and i2 == "O"):
-        return 100
-
-    #check third line
-    List = board[2]
-    i0, pos1 = List[0]
-    i1, pos2 = List[1]
-    i2, pos3 = List[2]
-    if( i0 == "X" and i1 == "X" and i2 == "X"):
-        return -100
-    
-    elif( i0 == "O" and i1 == "O" and i2 == "O"):
-        return 100
-    
-    
-    List_1 = board[0]
-    i0_1, pos1_1 = List_1[0]
-    i1_1, pos2_1 = List_1[1]
-    i2_1, pos3_1 = List_1[2]
-    
-    List_2 = board[1]
-    i0_2, pos1_2 = List_2[0]
-    i1_2, pos2_2 = List_2[1]
-    i2_2, pos3_2 = List_2[2]
-    
-    List_3 = board[2]
-    i0_3, pos1_3 = List_3[0]
-    i1_3, pos2_3 = List_3[1]
-    i2_3, pos3_3 = List_3[2]
-
-
-    #check first katheti-line
-    if( i0_1 == "X" and i0_2 == "X" and i0_3 == "X"):
-        return -100
-    
-    elif( i0_1 == "O" and i0_2 == "O" and i0_3 == "O"):
-        return 100
-    
-    #check second katheti-line
-    if(i1_1 == "X" and i1_2 == "X" and i1_3 == "X"):
-        return -100
-        
-    elif( i1_1 == "O" and i1_2 == "O" and i1_3 == "O"):
-        return 100
-        
-    #check third katheti-line
-    if( i2_1 == "X" and i2_2 == "X" and i2_3 == "X"):
-        return -100
-        
-    elif( i2_1 == "O" and i2_2 == "O" and i2_3 == "O"):
-        return 100
-    
-    
-    #check the first side-line
-    if( i0_1 == "X" and i1_2 == "X" and i2_3 == "X"):
-        return -100
-    
-    elif( i0_1 == "O" and i1_2 == "O" and i2_3 == "O"):
-        return 100
-    
-    #check the second side-line
-    if( i2_1 == "X" and i1_2 == "X" and i0_3 == "X"):
-        return -100
-    
-    elif( i2_1 == "O" and i1_2 == "O" and i0_3 == "O"):
-        return 100
-    
-    return 0        
-
-
-def minimax( board, depth, Max_player):
-    
-    score = check_for_win( board)
-    if score == 100:
-        return score
-    
-    if score == -100:
-        return score
-    
-    if tie_game( board) == True:
-        return 0
-    
-    if( Max_player):
-        best = -math.inf
-        for i in range(3):
-            List = board[i]
-            for j in range(3):
-                element, pos = List[j]
-                if element == None:
-                    
-                    element = "O"
-                    List[j] = (element, pos)
-                    board[i] = List
-                    
-                    best = max( best, minimax( board, depth+1, not Max_player))
-                    
-                    element = None
-                    List[j] = (element,pos)
-                    board[i] = List
-    
-        return best
-    else:
-        best = math.inf
-        for i in range(3):
-            List = board[i]
-            for j in range(3):
-                element, pos = List[j]
-                if element == None:
-                    
-                    element = "X"
-                    List[j] = (element, pos)
-                    board[i] = List
-                    
-                    best = min( best, minimax( board, depth+1, not Max_player))
-                    
-                    element = None
-                    List[j] = (element,pos)
-                    board[i] = List
-    
-        return best
-        
-def BestMove( board):
-    best = -math.inf
-    bestmove = (-1,-1)
-    for i in range(3):
-        List = board[i]
-        for j in range(3):
-            element, pos = List[j]
-            if element == None:
-                
-                element = "O"
-                List[j] = (element, pos)
-                board[i] = List
-                
-                evaluate_price = minimax( board, 0, False)
-                
-                element = None
-                List[j] = (element,pos)
-                board[i] = List
-                
-                if evaluate_price > best:
-                    best = evaluate_price
-                    bestmove = (i,j)                
-                
-    return bestmove
-
 def change_easy_or_dif( screen):
     
     BLACK = (  0,   0,   0)
@@ -687,11 +444,11 @@ def change_easy_or_dif( screen):
     WHITE = (255, 255, 255)
     BLUE =  (  0,   0, 255)
     BLUE_1 =  (  30,   144, 255)
-    easy =  pygame.image.load('easy_(1).png').convert_alpha()
-    hard =  pygame.image.load('hard_(1).png').convert_alpha()
+    easy =  pygame.image.load('Pictures/easy.png').convert_alpha()
+    hard =  pygame.image.load('Pictures/hard.png').convert_alpha()
     
-    e = pygame.image.load('exit.png').convert_alpha()
-    b = pygame.image.load('go-back.png').convert_alpha()
+    e = pygame.image.load('Pictures/exit.png').convert_alpha()
+    b = pygame.image.load('Pictures/go-back.png').convert_alpha()
     
     Easy = Button( 275, 100, easy, 1)
     Hard = Button( 275, 300, hard, 1)
@@ -736,55 +493,16 @@ def change_easy_or_dif( screen):
 
     return price
 
-
-def RandMove( board):
-    
-    for i in range(3):
-        List = board[i]
-        for j in range(3):
-            element, pos = List[j]
-            if element == None:
-                element = "O"
-                List[j] = (element, pos)
-                board[i] = List
-                
-                score = check_for_win( board)
-                
-                
-                element = None
-                List[j] = (element,pos)
-                board[i] = List
-                
-                if score == 100:
-                    move = (i,j)
-                    return move 
-                
-    
-    move = (-1,-1)
-    running = True
-    while running == True:
-        
-        x = random.randrange(0,3)
-        y = random.randrange(0,3)
-        
-        List = board[x]
-        element, pos = List[y]
-        if element == None:
-            move = (x,y)
-            running = False
-            
-    return move
-
 def one_player( screen, easy):
     
     
     board = create_board()
     
-    e = pygame.image.load('exit.png').convert_alpha()
-    b = pygame.image.load('go-back.png').convert_alpha()
-    x_icon = pygame.image.load('pic_x.png').convert_alpha()
-    o_icon = pygame.image.load('pic_o.png').convert_alpha()
-    play_a = pygame.image.load('replay.png').convert_alpha()
+    e = pygame.image.load('Pictures/exit.png').convert_alpha()
+    b = pygame.image.load('Pictures/go-back.png').convert_alpha()
+    x_icon = pygame.image.load('Pictures/pic_x.png').convert_alpha()
+    o_icon = pygame.image.load('Pictures/pic_o.png').convert_alpha()
+    play_a = pygame.image.load('Pictures/replay.png').convert_alpha()
     
     play_again = Button(370,470,play_a, 1)
     Exit = Button( 625, 450, e, 1)
@@ -1054,10 +772,10 @@ if __name__ == "__main__":
     pygame.display.set_caption("Tic Tac Toe")
 
     
-    trie = pygame.image.load('tic-tac-toe256.png').convert_alpha()
-    p1 = pygame.image.load('p2.jpg').convert_alpha()
-    p2 = pygame.image.load('p1.jpg').convert_alpha()
-    e = pygame.image.load('exit.png').convert_alpha()
+    trie = pygame.image.load('Pictures/tic-tac-toe256.png').convert_alpha()
+    p1 = pygame.image.load('Pictures/p_1.jpg').convert_alpha()
+    p2 = pygame.image.load('Pictures/p_2.jpg').convert_alpha()
+    e = pygame.image.load('Pictures/exit.png').convert_alpha()
 
     tic = Button( 300, 100, trie, 1)
     b_p1 = Button( 175, 375, p1, 1)

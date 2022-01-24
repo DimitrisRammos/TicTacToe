@@ -4,8 +4,8 @@ PROGRAM = Program
 CFLAGS = -Wall -no-pie -fPIE -g -I$(INCLUDE)
 
 # Αρχεία .o
-OBJS = $(PROGRAM)/tic
-
+OBJS = $(PROGRAM)/tic.py $(PROGRAM)/OnePlayer.py
+# EXEC = 
 
 # the executable program
 # EXEC = csp
