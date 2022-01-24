@@ -7,7 +7,7 @@ This game is a command line [TicTacToe](https://en.wikipedia.org/wiki/Tic-tac-to
 git clone https://github.com/DimitrisRammos/TicTacToe
 
 ## Code
-The project consists of 3 main folders: 
+The project consists of 2 main folders: 
 
 -Program, which includes the main function and other files.
 
