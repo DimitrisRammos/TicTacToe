@@ -2,7 +2,7 @@
 
 This game is a command line [TicTacToe](https://en.wikipedia.org/wiki/Tic-tac-toe), which can be played by 1 or 2 players.
 
-![TicTacToe](https://en.wikipedia.org/wiki/Tic-tac-toe#/media/File:Tic_tac_toe.svg)
+![TicTacToe](https://upload.wikimedia.org/wikipedia/commons/3/32/Tic_tac_toe.svg)
 
 ## Install
 
