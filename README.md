@@ -1,4 +1,4 @@
-# :x: :o: Tic Tac Toe
+# :o: :x: :o: Tic Tac Toe
 
 This game is a command line [TicTacToe](https://en.wikipedia.org/wiki/Tic-tac-toe), which can be played by 1 or 2 players.
 
