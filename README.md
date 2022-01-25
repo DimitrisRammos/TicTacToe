@@ -16,7 +16,7 @@ The project consists of 2 main folders:
 -Pictures, which includes the pictures where used in the game.
 
 ## Project Objective
-If you need further explanations on the code click [here.](https://github.com/DimitrisRammos/Role_Playing_Game/blob/main/Readme)
+If you need further explanations on the code click [here.](https://en.wikipedia.org/wiki/Tic-tac-toe)
 
 ## Compilation
 If you want to run the code, run the following commands:
