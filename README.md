@@ -22,6 +22,8 @@ If you need further explanations on the code click [here.](https://en.wikipedia.
 ## For the Game
 When start the game, you can to choise if you want to play `alone` with computer-machine or `two players`.
 
+
+
 #### If you touch `2 Players` you can to play with your friend together.
   
   The first player is `X`.
@@ -32,6 +34,8 @@ When start the game, you can to choise if you want to play `alone` with computer
   If the game have winner or the game is tie, you can to `play again` and you can touch the icon for play again.
   If you want to `go-back` touch the down-left icon.
   If you want to Stop the game touch the down-right icon `EXI`".
+
+
 
 #### If you touch `1 Player` you can to play with machine.
   
@@ -44,7 +48,8 @@ When start the game, you can to choise if you want to play `alone` with computer
   If the game have winner or the game is tie, you can to `play again` and you can touch the icon for play again.
   If you want to `go-back` touch the down-left icon.
   If you want to Stop the game touch the down-right icon `EXIT`.
-  
+ 
+ 
 ## Compilation
 If you want to run the code, run the following commands:
 
