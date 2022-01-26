@@ -11,7 +11,8 @@ import random
 from tic import *
 
 
-
+#if the game is tie
+#check it
 def tie_game( board):
     for i in range(3):
         List = board[i]
@@ -21,6 +22,10 @@ def tie_game( board):
                 return False
     return True
 
+#check if i have winner
+#return 100 if the winner is the O
+#return -100 if the winner is ths X
+#return 0 if the game is tie-game
 def check_for_win( board):
     
     #check first line
@@ -113,18 +118,22 @@ def check_for_win( board):
     
     return 0        
 
+#minimax algorithmic fot the playe
 def minimax( board, depth, Max_player):
     
     score = check_for_win( board)
+    #if the max win(O player)
     if score == 100:
         return score
-    
+    #if the max lose
     if score == -100:
         return score
     
+    #if i have tie-game
     if tie_game( board) == True:
         return 0
     
+    #The algorithick
     if( Max_player):
         best = -math.inf
         for i in range(3):
@@ -163,7 +172,8 @@ def minimax( board, depth, Max_player):
                     board[i] = List
     
         return best
-        
+  
+#start the algorithmic for all squares and call the minimax algoritmic      
 def BestMove( board):
     best = -math.inf
     bestmove = (-1,-1)
@@ -189,6 +199,9 @@ def BestMove( board):
                 
     return bestmove
 
+#for easy game
+#Th computer-machine play with rand but
+#if computer can to take the win with one move then play the best move
 def RandMove( board):
     
     for i in range(3):
