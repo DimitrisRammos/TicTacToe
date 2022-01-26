@@ -9,6 +9,7 @@ import pygame
 import random
 from OnePlayer_Functions import *
 
+#the class Button is for icons
 class Button():
     
     def __init__(self, x, y, image, scale):
@@ -18,7 +19,8 @@ class Button():
         self.rect = self.image.get_rect()
         self.rect.topleft = ( x,y)
         self.clicked = False
-        
+    
+    #draw icon if the user click the icon return True
     def draw( self):
         find = False
         
@@ -29,19 +31,20 @@ class Button():
         #get the mouse position
         position = pygame.mouse.get_pos()
         if self.rect.collidepoint( position):
+
             #if is the left click
             #not double click
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 self.clicked = True
                 find = True
                 
-                # sleep(1)
-                    
         
         screen.blit( self.image, (self.rect.x, self.rect.y))
 
         return find
     
+#The class Touch create one framework for x, y
+#The squares for the game (100x100)  
 class Touch():
     def __init__( self, x, y):
         self.width = 100
@@ -52,6 +55,7 @@ class Touch():
         self.rect = pygame.Rect((self.x,self.y), (self.width, self.height))
         self.find = False
         
+    #check if the user click the framework and return True
     def check( self):
         
         if self.find == True:
@@ -73,9 +77,14 @@ class Touch():
     def take_position( self):
         return ( self.x, self.y)
     
+    #if touch the oponent
     def check_it( self):
         self.find = True
-                        
+        
+    def take_check( self):
+        return self.find
+   
+#create board for the game                     
 def create_board():
     board = {}
     for i in range(3):
@@ -83,7 +92,9 @@ def create_board():
         
     return board
 
-
+#update the board for position (x-1,y-1)
+#and element = symbol (X or O)
+#pos is tuple with position in a screen game
 def update_board( board, x, y, symbol, pos):
     element = symbol
     List = board[x - 1]
@@ -94,7 +105,8 @@ def update_board( board, x, y, symbol, pos):
     List[y - 1] = ( element, pos)
     board[x-1] = List
     return board    
-    
+ 
+#check if we have Winner and return the position in a game   
 def check_board( board):
 
     #check first line
@@ -221,10 +233,11 @@ def check_board( board):
     
     return None
     
-    
+#for 2 players    
 def two_players( screen):
     board = create_board()
     
+    #load Pictures for game
     e = pygame.image.load('Pictures/exit.png').convert_alpha()
     b = pygame.image.load('Pictures/go-back.png').convert_alpha()
     x_icon = pygame.image.load('Pictures/pic_x.png').convert_alpha()
@@ -244,6 +257,7 @@ def two_players( screen):
     y = 100
     Table = []
     num = 0
+    #i create the squares for the game
     while num < 9:
         x = start
         t = Touch( x, y)
@@ -261,7 +275,7 @@ def two_players( screen):
         num += 1
         
         y += 100    
-        # start
+
     # Define the colors we will use in RGB format
     
     BLACK = (  0,   0,   0)
@@ -287,10 +301,13 @@ def two_players( screen):
     play = True
     play_now = True
     square = 0
+    #start to play
     while running:
 
         screen.fill( (30,144,255))
 
+        #if the user touch back return in the start
+        #if the user touch exit stop the game
         if play_now == False:
             if Exit.draw() == True:
                 running = False    
@@ -314,6 +331,8 @@ def two_players( screen):
         
         
         
+        #tha variable "play" is when i hava winner or tie and if i havn't it 
+        #play the game
         if play == True and play_now == False:
             find_x_y = 0
             find_y = 1
@@ -358,7 +377,7 @@ def two_players( screen):
         
         
         
-        
+        #draw the players in the board
         for k in range(3):
             List = board[k]
             for elem in List:
@@ -372,10 +391,13 @@ def two_players( screen):
                     else:
                         o1 = Button( x + 10, y + 10, o_icon, 0.6)
                         o1.draw() 
-                        
+            
+        
+        #check if i have winner
         price = check_board( board)
         if price != None:
             l1,l2 = price
+            #draw the lines for X or O player
             if i == 0:
                 if play == True:
                     score_o +=1
@@ -389,6 +411,7 @@ def two_players( screen):
                 pygame.draw.line( screen, BLACK, l1, l2, 5)
             play = False
             
+        #the grey line is for who players can to play this time
         if play == True:
             if i == 0:
                 pygame.draw.line( screen, GREY, [100,75], [275,75], 4)
@@ -396,9 +419,11 @@ def two_players( screen):
                 pygame.draw.line( screen, GREY, [550,77], [725,77], 4)
         
         
+        #if all squares is touch and i havn't winner then i have tie-game
         if play == True and square == 9:
             play = False
             
+        #if i have winner or tie then i print the playback emojil  
         if play == False:
             if play_again.draw() == True:
                 square = 0
@@ -436,6 +461,9 @@ def two_players( screen):
 
     return price_back
 
+#when i have one player the player change
+#if he want to play easy or hard
+#or to go-back or exit
 def change_easy_or_dif( screen):
     
     BLACK = (  0,   0,   0)
@@ -444,6 +472,8 @@ def change_easy_or_dif( screen):
     WHITE = (255, 255, 255)
     BLUE =  (  0,   0, 255)
     BLUE_1 =  (  30,   144, 255)
+    
+    #load Pictures for game
     easy =  pygame.image.load('Pictures/easy.png').convert_alpha()
     hard =  pygame.image.load('Pictures/hard.png').convert_alpha()
     
@@ -493,11 +523,13 @@ def change_easy_or_dif( screen):
 
     return price
 
+#for one player
 def one_player( screen, easy):
     
     
     board = create_board()
-    
+
+    #load Pictures for game
     e = pygame.image.load('Pictures/exit.png').convert_alpha()
     b = pygame.image.load('Pictures/go-back.png').convert_alpha()
     x_icon = pygame.image.load('Pictures/pic_x.png').convert_alpha()
@@ -517,6 +549,7 @@ def one_player( screen, easy):
     y = 100
     Table = []
     num = 0
+    #i create the squares for the game
     while num < 9:
         x = start
         t = Touch( x, y)
@@ -534,9 +567,8 @@ def one_player( screen, easy):
         num += 1
         
         y += 100    
-        # start
-    # Define the colors we will use in RGB format
-    
+
+    # Define the colors we will use in RGB format    
     BLACK = (  0,   0,   0)
     BLACK_1 = (  74,   74,   74)
 
@@ -563,10 +595,13 @@ def one_player( screen, easy):
     
     play_now = True
     play_first = 0
+    #start the game
     while running:
 
         screen.fill( (30,144,255))
 
+        #if the user touch back return in the start
+        #if the user touch exit stop the game
         if play_now == False:
             if Exit.draw() == True:
                 running = False    
@@ -589,7 +624,10 @@ def one_player( screen, easy):
         pygame.draw.line( screen, BLACK_1, [250,300], [550,300], 5)
         
         
-        
+        #The X player is the user and O the compute-machine
+        #tha variable "play" is when i hava winner or tie and if i havn't it 
+        #play the game
+        #The variable "play_x" is if now play the player X(user)
         if play == True and play_x == True and play_now == False:
             find_x_y = 0
             find_y = 1
@@ -615,17 +653,23 @@ def one_player( screen, easy):
                         board = update_board(board, find_x, find_y, "X", pos)
                         i = 1
                         play_x = False
-                    # else:
-                        # board = update_board(board, find_x, find_y, "O", pos)
-                        # i = 0
+
                     break
                 find_x_y += 1              
+        #If play_x = False play the computer-machine
         elif play == True and play_x == False and play_now == False:
             x = -1
             y = -1
+            
+            #If easy == 0 then the computer play easy
+            #If easy == 1 then the computer play hard
             if easy == 1 :
                 if( square != 0):
-                    theBestMove = BestMove( board)
+                    t = Table[4]
+                    if t.take_check() == False:
+                        theBestMove = ( 1,1)
+                    else:
+                        theBestMove = BestMove( board)
                     sleep(1)
                 else:
                     theBestMove = (1,1)
@@ -649,13 +693,10 @@ def one_player( screen, easy):
             t = Table[find_pos]
             pos = t.take_position()
             t.check_it()
-            #to x pou m gyrna einai se poia 
             
             x +=1
             y +=1
-            board = update_board( board, x,y, "O", pos)
-            # print("elaaa exo ", pos, x, y)
-            
+            board = update_board( board, x,y, "O", pos)            
                 
             i = 0
             play_x = True
@@ -672,7 +713,7 @@ def one_player( screen, easy):
         
         
         
-        
+        #draw the players in the board        
         for k in range(3):
             
             List = board[k]
@@ -688,9 +729,12 @@ def one_player( screen, easy):
                         o1 = Button( x + 10, y + 10, o_icon, 0.6)
                         o1.draw() 
                         
+        #check if i have winner
         price = check_board( board)
         if price != None:
             l1,l2 = price
+            
+            #draw the lines for X or O player
             if i == 0:
                 if play == True:
                     score_o +=1
@@ -711,9 +755,12 @@ def one_player( screen, easy):
                 pygame.draw.line( screen, GREY, [550,77], [725,77], 4)
         
         
+        #if all squares is touch and i havn't winner then i have tie-game
         if play == True and square == 9:
             play = False
-            
+          
+          
+        #if i have winner or tie then i print the playback emojil              
         if play == False:
             if play_again.draw() == True:
                 square = 0
@@ -770,8 +817,10 @@ if __name__ == "__main__":
     
     #title and icon
     pygame.display.set_caption("Tic Tac Toe")
-
+    icon = pygame.image.load('Pictures/t1.png').convert_alpha()
+    pygame.display.set_icon(icon)
     
+    #load the pictures
     trie = pygame.image.load('Pictures/tic-tac-toe256.png').convert_alpha()
     p1 = pygame.image.load('Pictures/p_1.jpg').convert_alpha()
     p2 = pygame.image.load('Pictures/p_2.jpg').convert_alpha()
@@ -787,8 +836,10 @@ if __name__ == "__main__":
         screen.fill((0,255,255))
         
         tic.draw()
+        #for one player if clicked it
         if b_p1.draw() == True:
-
+            
+            #change if you want to play easy or hard or back or exit 
             easy = change_easy_or_dif( screen)
             if( easy == 0 or easy == 1):
                 if one_player( screen, easy) == False:
@@ -799,12 +850,13 @@ if __name__ == "__main__":
                 running = False
                 break
             
-            
+        #for 2 players if clicked it 
         if b_p2.draw() == True:
             if two_players( screen) == False:
                 running = False
                 break
         
+        #if touch exit icon
         if Exit.draw() == True:
             running = False
 
