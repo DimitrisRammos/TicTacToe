@@ -4,21 +4,22 @@ This game is a command line [TicTacToe](https://en.wikipedia.org/wiki/Tic-tac-to
 
 ![TicTacToe](https://upload.wikimedia.org/wikipedia/commons/3/32/Tic_tac_toe.svg)
 
-## Install
-
+### Install
+```
 git clone https://github.com/DimitrisRammos/TicTacToe
+```
 
-## Code
+### Code
 The project consists of 2 main folders: 
 
 -Program, which includes the main function and other files.
 
 -Pictures, which includes the pictures where used in the game.
 
-## Project Objective
+### Project Objective
 If you need further explanations on the code click [here.](https://en.wikipedia.org/wiki/Tic-tac-toe)
 
-##For the Game
+### For the Game
 When start the game, you can to choise if you want to play alone with computer-machine or two players.
 
 If you touch 2 Players you can to play with your friend together.
@@ -44,9 +45,11 @@ If you touch 1 Player you can to play with machine.
   If you want to go-back touch the down-left icon.
   If you want to Stop the game touch the down-right icon "EXIT".
   
-## Compilation
+### Compilation
 If you want to run the code, run the following commands:
 
+```
+cd TicTacToe
 make run
-
+```
 After you can to play tha game.
