@@ -57,4 +57,4 @@ If you want to run the code, run the following commands:
 cd TicTacToe
 make run
 ```
-After you can to play tha game.
+After you can play tha game.
